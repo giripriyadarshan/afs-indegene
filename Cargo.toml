@@ -11,6 +11,10 @@ members = [
     "afs-cli",
 ]
 
+[[bin]]
+name = "afs-cli"
+path = "afs-cli/src/main.rs"
+
 [dependencies]
 calamine = "0.19.1"
 clap = { version = "4.2.7", features = ["derive"] }
