@@ -12,7 +12,10 @@ members = [
 ]
 
 [dependencies]
+calamine = "0.19.1"
 clap = { version = "4.2.7", features = ["derive"] }
+image = "0.24.6"
+pdfium-render = "0.8.3"
 serde = { version = "1.0.162", features = ["derive"] }
 toml = "0.7.3"
 zip = "0.6.5"
