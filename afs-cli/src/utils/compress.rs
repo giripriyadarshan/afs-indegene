@@ -1,5 +1,5 @@
 use std::fs::{self, File};
-use zip::{ZipWriter, result::ZipError};
+use zip::{result::ZipError, ZipWriter};
 
 pub fn compress_folder_contents(folder_path: &str, zip_file_path: &str) -> Result<(), ZipError> {
     // Create a new zip file at the specified path

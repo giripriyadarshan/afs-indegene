@@ -2,12 +2,13 @@ use clap::Parser;
 use std::fs::File;
 use std::io::Read;
 
-mod utils;
 mod args;
 mod config;
+mod utils;
 
 fn main() {
     let args = args::Arguments::parse();
+    println!("{:?}", args);
     // let mut file = File::open("config.toml").unwrap();
     // let mut contents = String::new();
     // file.read_to_string(&mut contents).expect("Failed to read config file");

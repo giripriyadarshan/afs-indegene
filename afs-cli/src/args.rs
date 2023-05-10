@@ -1,41 +1,49 @@
-use clap::{self, Parser};
+use clap::{self, Parser, Subcommand};
 
-#[derive(Parser, Default, Debug)]
+#[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)] // Read from `Cargo.toml`
 pub struct Arguments {
-    #[clap(short, long, required = true)]
-    /// run code
-    pub run_code: String,
+    #[clap(subcommand)]
+    pub command: Commands,
 
-    #[clap(short, long, required = true)]
-    /// should upload?
-    pub upload: bool,
+    /// 16 digit run code for the process
+    run_code: String,
+}
 
-    #[clap(short, long, requires = "upload")]
+#[derive(Subcommand, Debug)]
+pub enum Commands {
+    #[clap(name = "upload", alias = "u")]
+    /// can also use 'u'
+    Upload(Upload),
+
+    #[clap(name = "get_key_messages", alias = "gkm")]
+    /// can also use 'gkm'
+    GetKeyMessages,
+}
+
+#[derive(Parser, Debug)]
+pub struct Upload {
+    #[clap(short, long, required = true)]
     /// svn url
-    pub svn_path: String,
+    svn_path: String,
 
-    #[clap(short, long, requires = "upload")]
+    #[clap(short, long, required = true)]
     /// array of key_messages
-    pub key_messages: Vec<String>,
+    key_messages: Vec<String>,
 
-    #[clap(short, long, requires = "upload")]
+    #[clap(short, long)]
     /// if thumb is true, will generate thumb
-    pub thumb: bool,
+    thumb: bool,
 
-    #[clap(long, requires = "thumb")]
+    #[clap(short = 'w', long, default_value = "0")]
     /// if thumb is true, will accept thumb_width
-    pub thumb_width: u16,
+    thumb_width: u16,
 
-    #[clap(long, requires = "thumb")]
+    #[clap(short = 'e', long, default_value = "0")]
     /// if thumb is true, will accept thumb_height
-    pub thumb_height: u16,
+    thumb_height: u16,
 
-    #[clap(long, requires = "thumb")]
+    #[clap(short = 'm', long, default_value = "pdf")]
     /// if "pdf" will generate using pdf file, if "browser" will generate using browser backend
-    pub thumb_method: String,
-
-    #[clap(short, long, required = false)]
-    /// get_key_messages
-    pub get_key_messages: bool,
+    thumb_method: String,
 }
