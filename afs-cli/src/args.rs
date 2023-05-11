@@ -8,6 +8,10 @@ pub struct Arguments {
 
     /// 16 digit run code for the process
     run_code: String,
+
+    #[clap(short, long, required = true)]
+    /// svn url
+    svn_path: String,
 }
 
 #[derive(Subcommand, Debug)]
@@ -23,10 +27,6 @@ pub enum Commands {
 
 #[derive(Parser, Debug)]
 pub struct Upload {
-    #[clap(short, long, required = true)]
-    /// svn url
-    svn_path: String,
-
     #[clap(short, long, required = true)]
     /// array of key_messages
     key_messages: Vec<String>,
