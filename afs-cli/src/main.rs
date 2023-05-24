@@ -7,8 +7,14 @@ mod config;
 mod utils;
 
 fn main() {
-    let args = args::Arguments::parse();
-    println!("{:?}", args);
+    // check if config.toml exists
+    if !std::path::Path::new("config.toml").exists() {
+        eprintln!("config.toml not found");
+        std::process::exit(1);
+    }
+
+    // let args = args::Arguments::parse();
+    // println!("{:?}", args);
     // let mut file = File::open("config.toml").unwrap();
     // let mut contents = String::new();
     // file.read_to_string(&mut contents).expect("Failed to read config file");
