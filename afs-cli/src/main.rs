@@ -22,11 +22,11 @@ fn main() {
 
     // println!("{:?} {:?}", args, config);
 
-    // let folder_path = "./my_folder";
-    // let zip_file_path = "./my_archive.zip";
+    let folder_path = args.run_code.as_str();
+    let zip_file_path = args.svn_path.as_str();
 
-    // match utils::compress::compress_folder_contents(folder_path, zip_file_path) {
-    //     Ok(()) => println!("Archive created successfully"),
-    //     Err(e) => eprintln!("Error creating archive: {}", e),
-    // }
+    match utils::compress::compress_folder_contents(folder_path, zip_file_path) {
+        Ok(()) => println!("Archive created successfully"),
+        Err(e) => eprintln!("Error creating archive: {}", e),
+    }
 }

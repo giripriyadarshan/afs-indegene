@@ -7,11 +7,11 @@ pub struct Arguments {
     pub command: Commands,
 
     /// 16 digit run code for the process
-    run_code: String,
+    pub run_code: String,
 
     #[clap(short, long, required = true)]
     /// svn url
-    svn_path: String,
+    pub svn_path: String,
 }
 
 #[derive(Subcommand, Debug)]
