@@ -1,8 +1,6 @@
-use std::fs::{self, File};
-use std::io::prelude::*;
-use std::path::Path;
+use std::fs::File;
 use walkdir::WalkDir;
-use zip::{result::ZipError, write::FileOptions, CompressionMethod, ZipWriter};
+use zip::{result::ZipError, ZipWriter};
 
 pub fn compress_folder_contents(folder_path: &str, zip_file_path: &str) -> Result<(), ZipError> {
     // Create a new zip file at the specified path
