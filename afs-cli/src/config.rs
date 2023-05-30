@@ -9,11 +9,9 @@ pub struct Config {
 #[derive(Deserialize, Debug)]
 pub struct Files {
     pub key_messages_file: String,
-    pub local_shared_folder: String,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct Vault {
     pub link: String,
-    pub vault_shared_folder: String,
 }
