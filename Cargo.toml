@@ -10,6 +10,7 @@ edition = "2021"
 members = [
     "afs-cli",
     "afs-daemon",
+    "afs-checkout-tool"
 ]
 
 [[bin]]
@@ -19,6 +20,10 @@ path = "afs-cli/src/main.rs"
 [[bin]]
 name = "afs-daemon"
 path = "afs-daemon/src/main.rs"
+
+[[bin]]
+name = "afs-checkout-tool"
+path = "afs-checkout-tool/src/main.rs"
 
 [dependencies]
 actix-web = "4.3.1"
