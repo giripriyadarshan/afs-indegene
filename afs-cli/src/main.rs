@@ -2,9 +2,10 @@ use clap::Parser;
 use std::fs::File;
 use std::io::Read;
 
-mod args;
-mod config;
+mod models;
 mod utils;
+
+use models::{args, config};
 
 fn main() {
     // check if config.toml exists
@@ -23,9 +24,8 @@ fn main() {
     // println!("{:?} {:?}", args, config);
 
     let folder_path = args.run_code.as_str();
-    let zip_file_path = args.svn_path.as_str();
 
-    match utils::compress::compress_folder_contents(folder_path, zip_file_path) {
+    match utils::compress::compress_folder_contents(folder_path, "zip_file_path") {
         Ok(()) => println!("Archive created successfully"),
         Err(e) => eprintln!("Error creating archive: {}", e),
     }

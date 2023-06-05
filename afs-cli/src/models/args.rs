@@ -5,8 +5,4 @@ use clap::{self, Parser};
 pub struct Arguments {
     /// 16 digit run code for the process
     pub run_code: String,
-
-    #[clap(short, long, required = true)]
-    /// svn url
-    pub svn_path: String,
 }
