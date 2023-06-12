@@ -1,11 +1,11 @@
-use clap::Parser;
+// use clap::Parser;
 use std::fs::File;
 use std::io::Read;
 
 mod models;
 mod utils;
 
-use models::{args, config};
+use models::config;
 use tokio::task::JoinSet;
 use utils::{compress::compress_folder_contents, get_key_messages::get_key_messages};
 
@@ -17,8 +17,8 @@ async fn main() -> std::io::Result<()> {
         std::process::exit(1);
     }
 
-    let args = args::Arguments::parse();
-    println!("{:?}", args);
+    // let args = args::Arguments::parse();
+    // println!("{:?}", args);
     let mut file = File::open("config.toml").unwrap();
     let mut contents = String::new();
     file.read_to_string(&mut contents)
@@ -27,14 +27,13 @@ async fn main() -> std::io::Result<()> {
 
     // println!("{:?} {:?}", args, config);
 
-    let key_messages = get_key_messages(
-        config.files.key_messages_file,
-        "deliverable_path".to_owned(),
-    );
+    let key_messages = get_key_messages(config.files.key_messages_file);
 
     match key_messages {
         Some(key_messages) => {
-            std::fs::create_dir("output").unwrap();
+            if !std::path::Path::new("output").exists() {
+                std::fs::create_dir("output").unwrap();
+            }
             let mut processes = JoinSet::new();
             for km in key_messages {
                 let output = format!("output/{}.zip", km);
@@ -55,7 +54,7 @@ async fn main() -> std::io::Result<()> {
                 }
             }
             // delete the output folder
-            std::fs::remove_dir_all("output").unwrap();
+            // std::fs::remove_dir_all("output").unwrap();
         }
         None => {
             println!("No new key messages");
