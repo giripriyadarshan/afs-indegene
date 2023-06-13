@@ -1,6 +1,7 @@
 // use clap::Parser;
-use std::fs::File;
 use std::io::Read;
+use std::sync::Arc;
+use std::{collections::HashSet, fs::File};
 
 mod models;
 mod utils;
@@ -9,7 +10,7 @@ use models::config;
 use tokio::task::JoinSet;
 use utils::{
     check_veeva_session_id::check_veeva_session_id, compress::compress_folder_contents,
-    get_key_messages::get_key_messages,
+    get_key_messages::get_key_messages, get_keymessage_ids::get_keymessage_id,
 };
 
 #[tokio::main]
@@ -30,11 +31,25 @@ async fn main() -> std::io::Result<()> {
 
     // println!("{:?} {:?}", args, config);
 
-    let key_messages = get_key_messages(config.files.key_messages_file);
+    let session_id = check_veeva_session_id(config.vault.link.clone()).await;
+    let key_messages_list_with_id = get_keymessage_id(
+        config.vault.binder_id.clone(),
+        config.vault.link.clone(),
+        session_id.clone(),
+    )
+    .await;
+
+    let all_key_messages_list: HashSet<String> = key_messages_list_with_id
+        .clone()
+        .into_iter()
+        .map(|(k, _)| k)
+        .collect();
+
+    let key_messages = get_key_messages(all_key_messages_list);
 
     match key_messages {
         Some(key_messages) => {
-            let session_id = check_veeva_session_id(config.vault.link).await;
+            let key_message_ids_arc = Arc::new(key_messages_list_with_id);
             println!("Session ID: {}", session_id);
 
             if !std::path::Path::new("output").exists() {
@@ -43,6 +58,7 @@ async fn main() -> std::io::Result<()> {
             let mut processes = JoinSet::new();
             for km in key_messages {
                 let output = format!("output/{}.zip", km);
+                let kmid = key_message_ids_arc.clone();
                 processes.spawn(async move {
                     // check if km folder exists
                     if !std::path::Path::new(km.as_str()).exists() {
@@ -50,7 +66,7 @@ async fn main() -> std::io::Result<()> {
                         std::process::exit(1);
                     }
                     // compress the km
-                    compress_folder_contents(km, output);
+                    compress_folder_contents(km, output, kmid);
                 });
             }
 

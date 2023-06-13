@@ -1,8 +1,16 @@
 use std::fs::File;
+use std::sync::Arc;
+use toml::Table;
 use walkdir::WalkDir;
 use zip::ZipWriter;
 
-pub fn compress_folder_contents(folder_path: String, zip_file_path: String) {
+// use crate::utils::upload_to_veeva::upload_to_vault;
+
+pub fn compress_folder_contents(
+    folder_path: String,
+    zip_file_path: String,
+    key_message_id: Arc<Table>,
+) {
     let folder_path = folder_path.as_str();
     // Create a new zip file at the specified path
     let zip_file = File::create(zip_file_path).unwrap();
@@ -38,4 +46,6 @@ pub fn compress_folder_contents(folder_path: String, zip_file_path: String) {
 
     // Finish writing the zip file
     zip_writer.finish().unwrap();
+
+    println!("{:?}", key_message_id);
 }

@@ -27,7 +27,6 @@ path = "afs-checkout-tool/src/main.rs"
 
 [dependencies]
 actix-web = "4.3.1"
-calamine = "0.20.0"
 clap = { version = "4.3.0", features = ["derive"] }
 deadpool-lapin = "0.10.0"
 lapin = "2.2.1"

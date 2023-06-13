@@ -6,7 +6,7 @@ use toml::Table;
 use url::Url;
 
 use reqwest::{
-    header::{AUTHORIZATION, CONTENT_TYPE},
+    header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
     Client,
 };
 
@@ -64,7 +64,7 @@ async fn generate_new_session_id(veeva_url: String) -> String {
     let res = client
         .post(format!("{}/api/v23.1/auth", veeva_url).as_str())
         .header(CONTENT_TYPE, "application/x-www-form-urlencoded")
-        .header("Accept", "application/json")
+        .header(ACCEPT, "application/json")
         .body("username=Bi_admin@indegene-cpp.com&password=Veeva@123456")
         .send()
         .await

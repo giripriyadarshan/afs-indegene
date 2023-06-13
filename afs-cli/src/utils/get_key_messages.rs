@@ -6,9 +6,9 @@ use std::{
 };
 use xml::reader::{EventReader, XmlEvent};
 
-use crate::{models::revision, utils::read_excel::read_excel};
+use crate::models::revision;
 
-pub fn get_key_messages(key_messages_file: String) -> Option<HashSet<String>> {
+pub fn get_key_messages(all_key_messages: HashSet<String>) -> Option<HashSet<String>> {
     // run svn command to check latest revision number
     let output = Command::new("svn")
         .args(["log", "--xml", "-l", "1"])
@@ -16,8 +16,6 @@ pub fn get_key_messages(key_messages_file: String) -> Option<HashSet<String>> {
         .expect("Failed to execute command");
 
     let mut latest_revision_number: usize = 0;
-
-    let all_key_messages = read_excel(key_messages_file);
 
     if output.status.success() {
         let parser = EventReader::new(output.stdout.as_slice());
@@ -84,7 +82,7 @@ pub fn get_key_messages(key_messages_file: String) -> Option<HashSet<String>> {
                 file.write_all(b"[revision]").unwrap();
                 let lrn = format!("\nrevision_number = {}", latest_revision_number);
                 file.write_all(lrn.as_bytes()).unwrap();
-                // propogate error through afs daemon
+                // propagate error through afs daemon
                 None
             } else {
                 let mut changed_keymessages: HashSet<String> = HashSet::new();
