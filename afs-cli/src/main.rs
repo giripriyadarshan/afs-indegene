@@ -7,7 +7,10 @@ mod utils;
 
 use models::config;
 use tokio::task::JoinSet;
-use utils::{compress::compress_folder_contents, get_key_messages::get_key_messages};
+use utils::{
+    check_veeva_session_id::check_veeva_session_id, compress::compress_folder_contents,
+    get_key_messages::get_key_messages,
+};
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
@@ -31,6 +34,9 @@ async fn main() -> std::io::Result<()> {
 
     match key_messages {
         Some(key_messages) => {
+            let session_id = check_veeva_session_id(config.vault.link).await;
+            println!("Session ID: {}", session_id);
+
             if !std::path::Path::new("output").exists() {
                 std::fs::create_dir("output").unwrap();
             }

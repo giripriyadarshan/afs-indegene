@@ -89,7 +89,7 @@ pub fn get_key_messages(key_messages_file: String) -> Option<HashSet<String>> {
             } else {
                 let mut changed_keymessages: HashSet<String> = HashSet::new();
 
-                for i in revision_number..=latest_revision_number {
+                for i in (revision_number + 1)..=latest_revision_number {
                     let paths = read_paths_from_svn(i);
                     for path in paths {
                         let path = Path::new(&path);
@@ -114,12 +114,12 @@ pub fn get_key_messages(key_messages_file: String) -> Option<HashSet<String>> {
                 let lrn = format!("\nrevision_number = {}", latest_revision_number);
                 file.write_all(lrn.as_bytes()).unwrap();
 
-                Some(
-                    all_key_messages
-                        .intersection(&changed_keymessages)
-                        .cloned()
-                        .collect::<HashSet<String>>(),
-                )
+                let returned_key_messages = changed_keymessages
+                    .intersection(&all_key_messages)
+                    .cloned()
+                    .collect::<HashSet<String>>();
+
+                Some(returned_key_messages)
             }
         }
     }
