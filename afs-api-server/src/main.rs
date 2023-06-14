@@ -14,7 +14,7 @@ async fn handle_request(svn_url: String) -> impl Responder {
     let mut channel = session.channel_session().unwrap();
     let uuid = uuid::Uuid::new_v4();
     let command = format!(
-        "cd afs ; nohup afs-checkout-tool {} {} > ~/afs-logs/{}.log &",
+        "~/afs-checkout.sh {} {} {} > nohup.out &",
         uuid.as_u128(),
         svn_url,
         uuid.as_u128()
@@ -28,7 +28,7 @@ async fn handle_request(svn_url: String) -> impl Responder {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(move || App::new().wrap(Logger::default()).service(handle_request))
-        .bind(("localhost", 7892))?
+        .bind(("localhost", 8008))?
         .run()
         .await?;
 
