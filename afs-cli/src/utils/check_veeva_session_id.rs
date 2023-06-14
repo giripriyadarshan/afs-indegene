@@ -2,15 +2,18 @@ use serde_json::Value;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
+use std::sync::Arc;
 use toml::Table;
 use url::Url;
+
+use crate::utils::send_status_message::send_message;
 
 use reqwest::{
     header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
     Client,
 };
 
-pub async fn check_veeva_session_id(veeva_link: String) -> String {
+pub async fn check_veeva_session_id(run_code: Arc<String>, veeva_link: String) -> String {
     let veeva_url = Url::parse(veeva_link.as_str()).unwrap();
 
     let veeva_url = format!("{}://{}", veeva_url.scheme(), veeva_url.host_str().unwrap());
@@ -23,7 +26,7 @@ pub async fn check_veeva_session_id(veeva_link: String) -> String {
             .len()
             == 0
     {
-        return generate_new_session_id(veeva_url).await;
+        return generate_new_session_id(run_code, veeva_url).await;
     }
 
     // read session_id.toml file
@@ -49,17 +52,21 @@ pub async fn check_veeva_session_id(veeva_link: String) -> String {
         // read response
         let body = res.text().await.unwrap();
         if body.contains("FAILURE") {
-            generate_new_session_id(veeva_url).await
+            generate_new_session_id(run_code, veeva_url).await
         } else {
             session_id.to_owned()
         }
     } else {
-        eprintln!("Invalid session_id");
+        send_message(
+            run_code,
+            "DEV | FAILED | request failed while generating session id".to_owned(),
+        )
+        .await;
         std::process::exit(1);
     }
 }
 
-async fn generate_new_session_id(veeva_url: String) -> String {
+async fn generate_new_session_id(run_code: Arc<String>, veeva_url: String) -> String {
     let client = Client::new();
     let res = client
         .post(format!("{}/api/v23.1/auth", veeva_url).as_str())
@@ -108,7 +115,11 @@ async fn generate_new_session_id(veeva_url: String) -> String {
 
         session_id.to_string()
     } else {
-        eprintln!("Failed to generate new session_id");
+        send_message(
+            run_code,
+            "DEV | FAILED | failed to generate session id".to_owned(),
+        )
+        .await;
         std::process::exit(1);
     }
 }

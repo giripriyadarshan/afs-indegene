@@ -2,12 +2,20 @@ use serde_json::Value;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
+use std::sync::Arc;
 use toml::Table;
 use url::Url;
 
 use reqwest::{header::AUTHORIZATION, Client};
 
-pub async fn get_keymessage_id(binder_id: String, veeva_link: String, session_id: String) -> Table {
+use crate::utils::send_status_message::send_message;
+
+pub async fn get_keymessage_id(
+    run_code: Arc<String>,
+    binder_id: String,
+    veeva_link: String,
+    session_id: String,
+) -> Table {
     let veeva_url = Url::parse(veeva_link.as_str()).unwrap();
 
     let veeva_url = format!("{}://{}", veeva_url.scheme(), veeva_url.host_str().unwrap());
@@ -20,7 +28,7 @@ pub async fn get_keymessage_id(binder_id: String, veeva_link: String, session_id
             .len()
             == 0
     {
-        return generate_new_keymessage_id(binder_id, veeva_url, session_id).await;
+        return generate_new_keymessage_id(run_code, binder_id, veeva_url, session_id).await;
     }
 
     // read key_messages_id.toml file
@@ -32,6 +40,7 @@ pub async fn get_keymessage_id(binder_id: String, veeva_link: String, session_id
 }
 
 async fn generate_new_keymessage_id(
+    run_code: Arc<String>,
     binder_id: String,
     veeva_url: String,
     session_id: String,
@@ -74,7 +83,11 @@ async fn generate_new_keymessage_id(
             .unwrap();
         key_messages_id_table
     } else {
-        eprintln!("Invalid session_id");
+        send_message(
+            run_code,
+            "DEV | FAILED | invalid session id while getting keymessages".to_owned(),
+        )
+        .await;
         std::process::exit(1);
     }
 }

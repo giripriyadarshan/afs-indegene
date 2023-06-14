@@ -8,7 +8,10 @@ use reqwest::{
     Client,
 };
 
+use crate::utils::send_status_message::send_message;
+
 pub async fn upload_to_vault(
+    run_code: Arc<String>,
     file_name: String,
     vault_url: Arc<String>,
     zip_file_path: String,
@@ -52,9 +55,17 @@ pub async fn upload_to_vault(
             .unwrap();
 
         if upload_res.status().is_success() {
-            println!("{:?}", upload_res.text().unwrap());
+            send_message(
+                run_code,
+                format!("{} | SUCCESS | {:?}", file_name, upload_res.text().unwrap()),
+            )
+            .await;
         } else {
-            println!("{} failed to upload", file_name);
+            send_message(
+                run_code,
+                format!("{} | FAILED | {:?}", file_name, upload_res.text().unwrap()),
+            )
+            .await;
         }
     }
 }

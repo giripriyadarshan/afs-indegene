@@ -10,8 +10,5 @@ pub struct AppState {
 #[derive(Deserialize, Serialize)]
 pub struct MessageData {
     pub run_code: String,
-    pub process_type: String,
-    pub key_message_name: String,
-    pub status: String,
-    pub status_message: String,
+    pub message: String,
 }

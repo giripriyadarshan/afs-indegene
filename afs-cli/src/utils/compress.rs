@@ -7,6 +7,7 @@ use zip::ZipWriter;
 use crate::utils::upload_to_veeva::upload_to_vault;
 
 pub async fn compress_folder_contents(
+    run_code: Arc<String>,
     folder_path: String,
     zip_file_path: String,
     vault_url: Arc<String>,
@@ -50,6 +51,7 @@ pub async fn compress_folder_contents(
     zip_writer.finish().unwrap();
 
     let upload_process = upload_to_vault(
+        run_code,
         folder_path.to_owned(),
         vault_url,
         zip_file_path,

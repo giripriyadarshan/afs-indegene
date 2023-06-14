@@ -1,4 +1,4 @@
-// use clap::Parser;
+use clap::Parser;
 use std::io::Read;
 use std::sync::Arc;
 use std::{collections::HashSet, fs::File};
@@ -6,39 +6,46 @@ use std::{collections::HashSet, fs::File};
 mod models;
 mod utils;
 
-use models::config;
+use models::{args, config};
 use tokio::task::JoinSet;
 use utils::{
     check_veeva_session_id::check_veeva_session_id, compress::compress_folder_contents,
     get_key_messages::get_key_messages, get_keymessage_ids::get_keymessage_id,
+    send_status_message::send_message,
 };
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
+    let args = args::Arguments::parse();
+    let args = Arc::new(args.run_code);
+
     // check if config.toml exists
     if !std::path::Path::new("config.toml").exists() {
-        eprintln!("config.toml not found");
+        send_message(
+            args.clone(),
+            "ALL | FAILED | config.toml not found".to_string(),
+        )
+        .await;
         std::process::exit(1);
     }
 
-    // let args = args::Arguments::parse();
-    // println!("{:?}", args);
+    // read config.toml
     let mut file = File::open("config.toml").unwrap();
     let mut contents = String::new();
-    file.read_to_string(&mut contents)
-        .expect("Failed to read config file");
+    file.read_to_string(&mut contents).unwrap();
     let config: config::Config = toml::from_str(contents.as_str()).unwrap();
 
-    // println!("{:?} {:?}", args, config);
-
-    let session_id = check_veeva_session_id(config.vault.link.clone()).await;
+    // set session id and keymessages
+    let session_id = check_veeva_session_id(args.clone(), config.vault.link.clone()).await;
     let key_messages_list_with_id = get_keymessage_id(
+        args.clone(),
         config.vault.binder_id.clone(),
         config.vault.link.clone(),
         session_id.clone(),
     )
     .await;
 
+    // list out only the keymessage names
     let all_key_messages_list: HashSet<String> = key_messages_list_with_id
         .clone()
         .into_iter()
@@ -62,36 +69,36 @@ async fn main() -> std::io::Result<()> {
                 let kmid = key_message_ids_arc.clone();
                 let sid = session_id_arc.clone();
                 let vua = vault_url_arc.clone();
+                let args_run_code_clone = args.clone();
                 processes.spawn(async move {
                     // check if km folder exists
                     if !std::path::Path::new(km.as_str()).exists() {
-                        eprintln!("{} not found", km);
-                        std::process::exit(1);
+                        send_message(args_run_code_clone, format!("{} | FAILED | not found", km))
+                            .await;
+                        return;
                     }
                     // compress the km
-                    compress_folder_contents(km, output, vua, kmid, sid).await;
+                    compress_folder_contents(args_run_code_clone, km, output, vua, kmid, sid).await;
                 });
             }
 
             while let Some(res) = processes.join_next().await {
                 if res.is_err() {
-                    eprintln!("Error: {:?}", res);
+                    send_message(args.clone(), format!("DEV | FAILED | {:?}", res)).await;
                 }
             }
+
             // delete the output folder
-            // std::fs::remove_dir_all("output").unwrap();
+            std::fs::remove_dir_all("output").unwrap();
         }
         None => {
-            println!("No new key messages");
+            send_message(
+                args.clone(),
+                "ALL | SUCCESS | no new keymessages found".to_string(),
+            )
+            .await;
         }
     }
-
-    // let folder_path = args.run_code.as_str();
-
-    // match utils::compress::compress_folder_contents(folder_path, "zip_file_path").await {
-    //     Ok(()) => println!("Archive created successfully"),
-    //     Err(e) => eprintln!("Error creating archive: {}", e),
-    // }
 
     Ok(())
 }

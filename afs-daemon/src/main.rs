@@ -11,17 +11,13 @@ async fn handle_request(
     state: web::Data<AppState>,
     message_data: web::Json<MessageData>,
 ) -> impl Responder {
-    let response = format!(
-        "{} | {} | {} | {}",
-        message_data.process_type,
-        message_data.key_message_name,
-        message_data.status,
-        message_data.status_message
-    );
-
-    send_message(state, response, message_data.run_code.clone())
-        .await
-        .unwrap();
+    send_message(
+        state,
+        message_data.message.clone(),
+        message_data.run_code.clone(),
+    )
+    .await
+    .unwrap();
 
     HttpResponse::Ok()
 }
@@ -29,7 +25,7 @@ async fn handle_request(
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
     let state = AppState {
-        amqp_pool: create_amqp_pool("amqp://user:password@localhost:5672/%2f".into()),
+        amqp_pool: create_amqp_pool("amqp://user:password@172.30.106.6:5672/%2f".into()),
     };
 
     HttpServer::new(move || {
