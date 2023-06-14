@@ -4,7 +4,7 @@ use toml::Table;
 use walkdir::WalkDir;
 use zip::ZipWriter;
 
-use crate::utils::upload_to_veeva::upload_to_vault;
+use crate::utils::{send_status_message::send_message, upload_to_veeva::upload_to_vault};
 
 pub async fn compress_folder_contents(
     run_code: Arc<String>,
@@ -14,6 +14,15 @@ pub async fn compress_folder_contents(
     key_message_id: Arc<Table>,
     session_id: Arc<String>,
 ) {
+    send_message(
+        run_code.clone(),
+        format!(
+            "{} | PENDING | Work in progress, compressing and uploading now",
+            folder_path.clone()
+        ),
+    )
+    .await;
+
     let folder_path = folder_path.as_str();
     // Create a new zip file at the specified path
     let zip_file = File::create(zip_file_path.clone()).unwrap();
