@@ -10,7 +10,8 @@ edition = "2021"
 members = [
     "afs-cli",
     "afs-daemon",
-    "afs-checkout-tool"
+    "afs-checkout-tool",
+    "afs-api-server"
 ]
 
 [[bin]]
@@ -25,6 +26,10 @@ path = "afs-daemon/src/main.rs"
 name = "afs-checkout-tool"
 path = "afs-checkout-tool/src/main.rs"
 
+[[bin]]
+name = "afs-api-server"
+path = "afs-api-server/src/main.rs"
+
 [dependencies]
 actix-web = "4.3.1"
 clap = { version = "4.3.0", features = ["derive"] }
@@ -33,9 +38,11 @@ lapin = "2.2.1"
 reqwest = { version = "0.11.18", features = ["json", "multipart", "blocking"] }
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
+ssh2 = "0.9.4"
 tokio = { version = "1.28.2", features = ["full"] }
 toml = "0.7.4"
 url = "2.4.0"
+uuid = { version = "1.3.4", features = ["v4"] }
 walkdir = "2.3.3"
 xml-rs = "0.8.13"
 zip = "0.6.6"
