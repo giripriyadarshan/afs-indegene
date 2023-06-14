@@ -50,7 +50,8 @@ async fn main() -> std::io::Result<()> {
     match key_messages {
         Some(key_messages) => {
             let key_message_ids_arc = Arc::new(key_messages_list_with_id);
-            println!("Session ID: {}", session_id);
+            let session_id_arc = Arc::new(session_id);
+            let vault_url_arc = Arc::new(config.vault.link);
 
             if !std::path::Path::new("output").exists() {
                 std::fs::create_dir("output").unwrap();
@@ -59,6 +60,8 @@ async fn main() -> std::io::Result<()> {
             for km in key_messages {
                 let output = format!("output/{}.zip", km);
                 let kmid = key_message_ids_arc.clone();
+                let sid = session_id_arc.clone();
+                let vua = vault_url_arc.clone();
                 processes.spawn(async move {
                     // check if km folder exists
                     if !std::path::Path::new(km.as_str()).exists() {
@@ -66,7 +69,7 @@ async fn main() -> std::io::Result<()> {
                         std::process::exit(1);
                     }
                     // compress the km
-                    compress_folder_contents(km, output, kmid);
+                    compress_folder_contents(km, output, vua, kmid, sid).await;
                 });
             }
 

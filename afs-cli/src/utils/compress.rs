@@ -4,16 +4,18 @@ use toml::Table;
 use walkdir::WalkDir;
 use zip::ZipWriter;
 
-// use crate::utils::upload_to_veeva::upload_to_vault;
+use crate::utils::upload_to_veeva::upload_to_vault;
 
-pub fn compress_folder_contents(
+pub async fn compress_folder_contents(
     folder_path: String,
     zip_file_path: String,
+    vault_url: Arc<String>,
     key_message_id: Arc<Table>,
+    session_id: Arc<String>,
 ) {
     let folder_path = folder_path.as_str();
     // Create a new zip file at the specified path
-    let zip_file = File::create(zip_file_path).unwrap();
+    let zip_file = File::create(zip_file_path.clone()).unwrap();
     let mut zip_writer = ZipWriter::new(zip_file);
 
     // Recursively iterate over each file and folder in the specified folder and add them to the zip archive
@@ -47,5 +49,13 @@ pub fn compress_folder_contents(
     // Finish writing the zip file
     zip_writer.finish().unwrap();
 
-    println!("{:?}", key_message_id);
+    let upload_process = upload_to_vault(
+        folder_path.to_owned(),
+        vault_url,
+        zip_file_path,
+        key_message_id,
+        session_id,
+    );
+
+    upload_process.await;
 }
