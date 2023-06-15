@@ -18,11 +18,19 @@ fn main() {
             .arg("checkout")
             .arg(args.svn_url)
             .arg(folder_path)
+            .arg("--username")
+            .arg("priyadarshan.giri")
+            .arg("--password")
+            .arg("this1sforAFS")
             .output()
             .expect("failed to execute process");
     } else {
         Command::new("svn")
             .arg("update")
+            .arg("--username")
+            .arg("priyadarshan.giri")
+            .arg("--password")
+            .arg("this1sforAFS")
             .current_dir(folder_path)
             .output()
             .expect("failed to execute process");

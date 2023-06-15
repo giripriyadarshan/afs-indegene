@@ -12,6 +12,10 @@ pub fn get_key_messages(all_key_messages: HashSet<String>) -> Option<HashSet<Str
     // run svn command to check latest revision number
     let output = Command::new("svn")
         .args(["log", "--xml", "-l", "1"])
+        .arg("--username")
+        .arg("priyadarshan.giri")
+        .arg("--password")
+        .arg("this1sforAFS")
         .output()
         .expect("Failed to execute command");
 
@@ -132,6 +136,10 @@ fn read_paths_from_svn(revision_number: usize) -> Vec<String> {
             "-r",
             revision_number.to_string().as_str(),
         ])
+        .arg("--username")
+        .arg("priyadarshan.giri")
+        .arg("--password")
+        .arg("this1sforAFS")
         .output()
         .expect("Failed to execute command");
 
@@ -182,6 +190,10 @@ fn read_paths_from_svn(revision_number: usize) -> Vec<String> {
 fn get_relative_path() -> String {
     let output = Command::new("svn")
         .args(["info", "--xml"])
+        .arg("--username")
+        .arg("priyadarshan.giri")
+        .arg("--password")
+        .arg("this1sforAFS")
         .output()
         .expect("Failed to execute command");
 
