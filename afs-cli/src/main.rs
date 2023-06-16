@@ -90,6 +90,11 @@ async fn main() -> std::io::Result<()> {
 
             // delete the output folder
             std::fs::remove_dir_all("output").unwrap();
+            send_message(
+                args.clone(),
+                "END | SUCCESS | completed all tasks".to_string(),
+            )
+            .await;
         }
         None => {
             send_message(

@@ -11,7 +11,8 @@ members = [
     "afs-cli",
     "afs-daemon",
     "afs-checkout-tool",
-    "afs-api-server"
+    "afs-api-server",
+    "afs-desktop-app/src-tauri"
 ]
 
 [[bin]]
@@ -46,3 +47,6 @@ uuid = { version = "1.3.4", features = ["v4"] }
 walkdir = "2.3.3"
 xml-rs = "0.8.13"
 zip = "0.6.6"
+tauri = { version = "1.4.0" }
+futures-lite = "1.13.0"
+async-global-executor = "2.3.1"

@@ -1,8 +1,10 @@
 use crate::models::AppState;
 use actix_web::web::Data;
-use deadpool_lapin::lapin::types::FieldTable;
-use deadpool_lapin::lapin::types::LongString;
-use deadpool_lapin::lapin::{options::BasicPublishOptions, BasicProperties};
+use deadpool_lapin::lapin::types::{AMQPValue, FieldTable, LongUInt, ShortString};
+use deadpool_lapin::lapin::{
+    options::{BasicPublishOptions, QueueBindOptions, QueueDeclareOptions},
+    BasicProperties,
+};
 
 pub async fn send_message(
     state: Data<AppState>,
@@ -13,14 +15,42 @@ pub async fn send_message(
     let channel = connection.create_channel().await.unwrap();
     let payload = message.as_bytes();
     let options = BasicPublishOptions::default();
-    let mut header = FieldTable::default();
-    header.insert(
-        "run_code".into(),
-        lapin::types::AMQPValue::LongString(LongString::from(run_code)),
+
+    let properties = BasicProperties::default();
+    let mut channel_args = FieldTable::default();
+
+    channel_args.insert(
+        ShortString::from("x-message-ttl"),
+        AMQPValue::LongUInt(LongUInt::from(60000_u32)),
     );
-    let properties = BasicProperties::default().with_headers(header);
     channel
-        .basic_publish("afs-status", "", options, payload, properties)
+        .queue_declare(
+            run_code.as_str(),
+            QueueDeclareOptions::default(),
+            channel_args,
+        )
+        .await
+        .unwrap();
+
+    channel
+        .queue_bind(
+            run_code.as_str(),
+            "afs-status",
+            run_code.as_str(),
+            QueueBindOptions::default(),
+            FieldTable::default(),
+        )
+        .await
+        .unwrap();
+
+    channel
+        .basic_publish(
+            "afs-status",
+            run_code.as_str(),
+            options,
+            payload,
+            properties,
+        )
         .await?;
     Ok(())
 }
