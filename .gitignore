@@ -3,3 +3,4 @@
 /mock_folders
 /mock_output
 afs-desktop-app/yarn.lock
+afs-desktop-app/package-lock.json
