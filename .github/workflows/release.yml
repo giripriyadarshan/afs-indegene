@@ -14,7 +14,7 @@ jobs:
       matrix:
         platform: [macos-latest, ubuntu-20.04, windows-latest]
     runs-on: ${{ matrix.platform }}
-    working-directory: ./afs-desktop-app
+
 
     steps:
       - name: Checkout repository
@@ -42,6 +42,7 @@ jobs:
           cache: 'yarn' # Set this to npm, yarn or pnpm.
 
       - name: Install frontend dependencies
+        working-directory: ./afs-desktop-app
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: yarn install # Change this to npm, yarn or pnpm.
 
