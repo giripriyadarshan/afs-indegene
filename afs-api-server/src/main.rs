@@ -28,7 +28,7 @@ async fn handle_request(svn_url: String) -> impl Responder {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(move || App::new().wrap(Logger::default()).service(handle_request))
-        .bind(("localhost", 8008))?
+        .bind(("0.0.0.0", 8008))?
         .run()
         .await?;
 
