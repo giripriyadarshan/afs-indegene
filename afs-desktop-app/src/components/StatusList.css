@@ -1,0 +1,66 @@
+ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    overflow-y: scroll;
+}
+
+li {
+    list-style-type: none;
+    margin: 10px 0;
+    padding: 0;
+    position: relative;
+}
+
+li span {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+
+    display: inline-block;
+    margin-right: 30px;
+
+    position: relative;
+    top: 4px;
+
+}
+
+li span.success {
+    background-color: lightgreen;
+}
+
+li span.failure {
+    background-color: red;
+}
+
+li span.pending {
+    background-color: yellow;
+}
+
+li i {
+    margin: 0 30px;
+}
+
+li:has(>span.pending)::before {
+    animation: top-line-glow 1s linear infinite;
+}
+
+@keyframes top-line-glow {
+    0% {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: yellow;
+    }
+    50% {
+        background-color: transparent;
+    }
+    100% {
+        background-color: yellow;
+    }
+}
