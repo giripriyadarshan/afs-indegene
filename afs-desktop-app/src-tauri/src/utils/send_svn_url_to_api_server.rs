@@ -4,8 +4,8 @@ use reqwest::Client;
 pub async fn send_url(svn_url: &str) -> Result<String, String> {
     let client = Client::new();
     let res = client
-        .post("http://172.30.106.6:8008/")
-        // .post("http://localhost:8008/")
+        // .post("http://172.30.106.6:8008/") // for production
+        .post("http://localhost:8008/")
         .body(svn_url.to_string())
         .send()
         .await

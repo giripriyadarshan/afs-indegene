@@ -12,7 +12,12 @@ async fn subscribe_to_messages(run_code: String, app: tauri::AppHandle) -> Resul
             .await
             .unwrap();
 
+        let mut tries = 0;
         let mut consumer = loop {
+            tries += 1;
+            if tries > 10 {
+                return Ok(s) as Result<String, ()>;
+            }
             let channel = conn.create_channel().await.unwrap();
             let channel = channel
                 .basic_consume(

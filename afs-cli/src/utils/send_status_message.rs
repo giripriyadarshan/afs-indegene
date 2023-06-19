@@ -3,7 +3,7 @@ use std::sync::Arc;
 
 pub async fn send_message(run_code: Arc<String>, message: String) {
     let client = Client::new();
-    client
+    let res = client
         .post("http://localhost:3825")
         .header(CONTENT_TYPE, "application/json")
         .body(
@@ -14,6 +14,12 @@ pub async fn send_message(run_code: Arc<String>, message: String) {
             .unwrap(),
         )
         .send()
-        .await
-        .unwrap();
+        .await;
+
+    match res {
+        Ok(_) => {}
+        Err(e) => {
+            println!("Error sending message: {}", e);
+        }
+    }
 }
