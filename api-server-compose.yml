@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  rabbit-mq-instance:
+    image: rabbitmq:management
+    container_name: afs-rabbit
+    volumes: 
+      - rabbit-mq-instance:/var/lib/rabbitmq/
+    ports:
+      - "5672:5672"
+      - "8080:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+    restart: always
+
+  afs-api-server:
+    build: ./afs-api-server/
+    ports:
+      - "8008:8008"
+
+volumes:
+  rabbit-mq-instance:
