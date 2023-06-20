@@ -12,7 +12,7 @@ export default function getKeyValue(status) {
 
           if (itemArr[0] == "END") {
             let x = {
-              key: itemArr[0],
+              key: itemArr[2],
               value: itemArr[1]
             }
 
@@ -20,6 +20,10 @@ export default function getKeyValue(status) {
             
             // break the loop
             return false
+          }
+
+          if (itemArr[0] == "ALL") {
+            itemArr[0] = itemArr[2]
           }
           
           let found = kvStatus.find(element => element.key == itemArr[0])

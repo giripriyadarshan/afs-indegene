@@ -9,12 +9,14 @@ function App() {
   const [url, setUrl] = useState('')
   const [uuid, setUuid] = useState('')
   const [status, setStatus] = useState([])
+  const [clickedButton, setClickedButton] = useState(false)
   let kvStatus = getKeyValue(status)
 
   let urlExpression = new RegExp('^(http|https)://', 'i')
 
   const sendSvnUrl = () => {
     setStatus([])
+    setClickedButton(true)
     invoke('send_url', { svnUrl: url }).then((response) => {
       console.log(response)
       if (uuid !== '') {
@@ -59,7 +61,7 @@ function App() {
             <span>Go</span>
           </button>
       </div>
-        {kvStatus.length > 0 ? <StatusList status={kvStatus} /> : null}
+        {kvStatus.length > 0 ? <StatusList status={kvStatus} /> : clickedButton? <p>Waiting for response...</p> : null}
     </>
   )
 }
