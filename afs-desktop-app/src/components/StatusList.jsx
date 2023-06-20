@@ -3,15 +3,49 @@ import './StatusList.css'
 export default function StatusList(props) {
     return (
         <div className="status-container">
-          <ul>
-            {props.status.map((item, index) => 
-                <li key={index}><span className={
+          <table>
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Keymessage</th>
+              </tr>
+            </thead>
+            <tbody>
+              {props.status.map((item, index) =>
+                <tr key={index}>
+                  <td className={
                     item.value == "SUCCESS"? "success" : item.value == "PENDING"? "pending" : "failed"
-                }></span> 
-                {item.key} <i>----------</i> {item.value}
-                </li>
-            )}
-          </ul>
+                  }></td>
+                  <td>{item.key}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
     )
 }
+
+/*
+convert the above into a table
+
+<table>
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Keymessage</th>
+    </tr>
+  </thead>
+  <tbody>
+    {props.status.map((item, index) =>
+      <tr key={index}>
+        <td className={
+          item.value == "SUCCESS"? "success" : item.value == "PENDING"? "pending" : "failed"
+        }></td>
+        <td>{item.key}</td>
+      </tr>
+    )}
+  </tbody>
+</table>
+
+
+*/

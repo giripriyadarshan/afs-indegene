@@ -1,43 +1,42 @@
-ul {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-
-    overflow-y: scroll;
-}
-
-li {
+tr {
     list-style-type: none;
     margin: 10px 0;
     padding: 0;
     position: relative;
 }
 
-li span {
+td {
+    text-align: center;
+}
+
+tr td:first-child {
     width: 20px;
     height: 20px;
     border-radius: 50%;
 
     display: inline-block;
-    margin-right: 30px;
-
-    position: relative;
-    top: 4px;
 
 }
 
-li span.success {
+span.success, tr td:first-child.success {
     background-color: lightgreen;
 }
 
-li span.failure {
+span.failed, tr td:first-child.failed {
     background-color: red;
 }
 
-li span.pending {
-    background-color: yellow;
+span.pending, tr td:first-child.pending {
+    box-shadow: rgba(255, 255, 0, 0.4) 0px 2px 4px, rgba(255, 255, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    animation: rotate 2.0s infinite linear;
 }
+  
+@keyframes rotate {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+  
 
 li i {
     margin: 0 30px;

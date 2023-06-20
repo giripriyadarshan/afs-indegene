@@ -214,6 +214,9 @@ name = "afs-checkout-tool"
 version = "0.1.0"
 dependencies = [
  "clap",
+ "reqwest",
+ "serde_json",
+ "tokio",
  "url",
 ]
 

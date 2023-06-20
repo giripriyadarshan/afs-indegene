@@ -19,6 +19,8 @@ async fn main() -> std::io::Result<()> {
     let args = args::Arguments::parse();
     let args = Arc::new(args.run_code);
 
+    send_message(args.clone(), format!("START | SUCCESS | NOT REQUIRED")).await;
+
     // check if config.toml exists
     if !std::path::Path::new("config.toml").exists() {
         send_message(
