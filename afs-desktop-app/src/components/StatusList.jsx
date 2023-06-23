@@ -3,6 +3,7 @@ import './StatusList.css'
 export default function StatusList(props) {
     return (
         <div className="status-container">
+          <p className='table-title'>{props.title}</p>
           <table>
             <thead>
               <tr>

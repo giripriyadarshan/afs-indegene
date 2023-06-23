@@ -1,0 +1,27 @@
+.button {
+    --button-color: #dbd8d8;
+    --contrast-color: #242424;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 35px;
+    color: var(--button-color);
+    background-color: transparent;
+    outline: 3px var(--button-color) solid;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+
+    font-weight: 700;
+    font-size: 1.1em;
+}
+
+.button:hover {
+    background-color: var(--button-color);
+    color: var(--contrast-color);
+}
+
+.button:active {
+    transform: scale(0.995);
+    opacity: 0.8;
+}

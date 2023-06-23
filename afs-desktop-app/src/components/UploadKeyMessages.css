@@ -1,0 +1,36 @@
+h1,h2{
+    position: absolute;
+}
+
+h1 {
+    top: 90px;
+    left: 30px;
+}
+
+h2 {
+    top: 230px;
+    left: 30px;
+}
+
+.input-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 100%;
+
+    margin-top: 230px;
+}
+
+.input-element {
+    width: 300px;
+}
+
+.input-button {
+    margin-left: 50px;
+}
+
+.statuses {
+    margin-top: 50px;
+}
