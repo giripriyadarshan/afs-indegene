@@ -1,7 +1,12 @@
 use clap::Parser;
-use std::io::Read;
-use std::sync::Arc;
-use std::{collections::HashSet, fs::File};
+use std::{
+    collections::HashSet,
+    env::{current_dir, set_current_dir},
+    fs::{remove_dir_all, File},
+    io::Read,
+    path::Path,
+    sync::Arc,
+};
 
 mod models;
 mod utils;
@@ -28,6 +33,10 @@ async fn main() -> std::io::Result<()> {
             "ALL | FAILED | config.toml not found".to_string(),
         )
         .await;
+        let current_dir_path = current_dir().unwrap();
+        let current_dir = current_dir_path.iter().next_back().unwrap();
+        set_current_dir(Path::new("..")).unwrap();
+        remove_dir_all(current_dir).unwrap();
         std::process::exit(1);
     }
 
