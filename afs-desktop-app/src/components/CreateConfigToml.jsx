@@ -8,12 +8,26 @@ import { writeTextFile } from '@tauri-apps/api/fs';
 export default function CreateConfigToml() {
     const [documentLink, setDocumentLink] = useState('');
     const [documentNumber, setDocumentNumber] = useState('');
+    const [linkErrorMessage, setLinkErrorMessage] = useState('');
+    const [numberErrorMessage, setNumberErrorMessage] = useState('');
+    let urlExpression = new RegExp('^(http|https)://', 'i')
 
     const validateForm = () => {
-        if (documentLink !== '' && !isNaN(documentNumber)) {
+        let linkValidity = documentLink.match(urlExpression);
+        let numberValidity = !isNaN(documentNumber);
+        if ( linkValidity && numberValidity ) {
             downloadConfig();
+        } 
+        if (!linkValidity) {
+            setLinkErrorMessage('Please enter a valid document link');
         } else {
-            // TODO: Show error message
+            setLinkErrorMessage('');
+        }
+        if (!numberValidity) {
+            setNumberErrorMessage('Please enter a valid document number');
+        }
+        else {
+            setNumberErrorMessage('');
         }
     };
 
@@ -27,7 +41,7 @@ export default function CreateConfigToml() {
             }]
         });
 
-        const config = `[vault]\nlink = "${documentLink}"\nbinder_id = ${documentNumber}`;
+        const config = `[vault]\nlink = "${documentLink}"\nbinder_id = "${documentNumber}"`;
 
         await writeTextFile(filePath, config);
     }
@@ -65,6 +79,11 @@ export default function CreateConfigToml() {
                 <div className="input-button">
                     <GenericButton label={"Save"} disabled={false} onClick={validateForm} />
                 </div>
+            </div>
+
+            <div className="error-messages">
+                <p>{linkErrorMessage}</p>
+                <p>{numberErrorMessage}</p>
             </div>
 
         </>
