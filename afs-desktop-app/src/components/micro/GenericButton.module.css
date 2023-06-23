@@ -25,3 +25,10 @@
     transform: scale(0.995);
     opacity: 0.8;
 }
+
+.button:disabled {
+    background: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    pointer-events: none;
+}

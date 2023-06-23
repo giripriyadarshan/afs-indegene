@@ -2,27 +2,43 @@ import { useState } from 'react'
 import './CreateConfigToml.css'
 import Input from './micro/Input'
 import GenericButton from './micro/GenericButton';
+import { save } from "@tauri-apps/api/dialog";
+import { writeTextFile } from '@tauri-apps/api/fs';
 
 export default function CreateConfigToml() {
-    const [url, setUrl] = useState('');
     const [documentLink, setDocumentLink] = useState('');
     const [documentNumber, setDocumentNumber] = useState('');
+
+    const validateForm = () => {
+        if (documentLink !== '' && !isNaN(documentNumber)) {
+            downloadConfig();
+        } else {
+            // TODO: Show error message
+        }
+    };
+
+
+    async function downloadConfig() {
+
+        const filePath = await save({
+            filters: [{
+                name: 'toml',
+                extensions: ['toml']
+            }]
+        });
+
+        const config = `[vault]\nlink = "${documentLink}"\nbinder_id = ${documentNumber}`;
+
+        await writeTextFile(filePath, config);
+    }
+
+
     return (
         <>
             <h1>Veeva Vault Uploader Config Creator</h1>
             <h2>By Daemons</h2>
 
             <div className="form">
-                <div className="input-element">
-                    <Input
-                        label={"SVN URL"}
-                        name={"svn-url"}
-                        onChange={(e) => setUrl(e.target.value)}
-                        placeholder={"Please enter the svn URL of HTML Folder"}
-                        type={"text"}
-                        value={url}
-                    />
-                </div>
 
                 <div className="input-element">
                     <Input
@@ -30,7 +46,7 @@ export default function CreateConfigToml() {
                         name={"document-link"}
                         onChange={(e) => setDocumentLink(e.target.value)}
                         placeholder={"Please enter the document link"}
-                        type={"text"}
+                        type={"url"}
                         value={documentLink}
                     />
                 </div>
@@ -41,13 +57,13 @@ export default function CreateConfigToml() {
                         name={"document-number"}
                         onChange={(e) => setDocumentNumber(e.target.value)}
                         placeholder={"Please enter the document number"}
-                        type={"number"}
+                        type={"text"}
                         value={documentNumber}
                     />
                 </div>
 
                 <div className="input-button">
-                    <GenericButton label={"Create config.toml"} />
+                    <GenericButton label={"Save"} disabled={false} onClick={validateForm} />
                 </div>
             </div>
 

@@ -11,7 +11,14 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": false,
+      "dialog": {
+        "save": true
+      },
+      "fs": {
+        "writeFile": true,
+        "scope": ["$HOME/*", "$DOCUMENT/*", "$DESKTOP/*"]
+      }
     },
     "bundle": {
       "active": true,
