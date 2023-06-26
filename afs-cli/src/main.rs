@@ -27,7 +27,7 @@ async fn main() -> std::io::Result<()> {
     send_message(args.clone(), format!("START | SUCCESS | NOT REQUIRED")).await;
 
     // check if config.toml exists
-    if !std::path::Path::new("config.toml").exists() {
+    if !Path::new("config.toml").exists() {
         send_message(
             args.clone(),
             "ALL | FAILED | config.toml not found".to_string(),
@@ -71,7 +71,7 @@ async fn main() -> std::io::Result<()> {
             let session_id_arc = Arc::new(session_id);
             let vault_url_arc = Arc::new(config.vault.link);
 
-            if !std::path::Path::new("output").exists() {
+            if !Path::new("output").exists() {
                 std::fs::create_dir("output").unwrap();
             }
             let mut processes = JoinSet::new();
@@ -83,7 +83,7 @@ async fn main() -> std::io::Result<()> {
                 let args_run_code_clone = args.clone();
                 processes.spawn(async move {
                     // check if km folder exists
-                    if !std::path::Path::new(km.as_str()).exists() {
+                    if !Path::new(km.as_str()).exists() {
                         send_message(args_run_code_clone, format!("{} | FAILED | not found", km))
                             .await;
                         return;
@@ -100,7 +100,7 @@ async fn main() -> std::io::Result<()> {
             }
 
             // delete the output folder
-            std::fs::remove_dir_all("output").unwrap();
+            remove_dir_all("output").unwrap();
             send_message(
                 args.clone(),
                 "END | SUCCESS | completed all tasks".to_string(),

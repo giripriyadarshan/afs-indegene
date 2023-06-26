@@ -71,7 +71,7 @@ async fn generate_new_keymessage_id(
 
         // check if key_messages_id.toml file exists
         if !std::path::Path::new("key_messages_id.toml").exists() {
-            std::fs::File::create("key_messages_id.toml").unwrap();
+            File::create("key_messages_id.toml").unwrap();
         }
 
         // write key_messages_id.toml file

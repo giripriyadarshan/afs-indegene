@@ -91,7 +91,7 @@ async fn generate_new_session_id(run_code: Arc<String>, veeva_url: String) -> St
 
         // parse session_id.toml file
         let mut contents = String::new();
-        let mut session_id_toml = toml::value::Table::new();
+        let mut session_id_toml = Table::new();
         // check if file is empty
         if file.metadata().unwrap().len() != 0 {
             file.read_to_string(&mut contents)
@@ -102,7 +102,7 @@ async fn generate_new_session_id(run_code: Arc<String>, veeva_url: String) -> St
         // go to veeva url section
         let veeva_url_section = session_id_toml
             .entry("veeva_url")
-            .or_insert_with(|| toml::Value::Table(toml::value::Table::new()))
+            .or_insert_with(|| toml::Value::Table(Table::new()))
             .as_table_mut()
             .unwrap();
 

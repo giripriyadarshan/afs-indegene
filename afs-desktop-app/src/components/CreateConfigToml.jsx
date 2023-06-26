@@ -77,7 +77,7 @@ export default function CreateConfigToml() {
                 </div>
 
                 <div className="input-button">
-                    <GenericButton label={"Save"} disabled={false} onClick={validateForm} />
+                    <GenericButton label={"Save File"} disabled={false} onClick={validateForm} />
                 </div>
             </div>
 

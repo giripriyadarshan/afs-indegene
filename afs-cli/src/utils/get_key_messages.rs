@@ -51,7 +51,7 @@ pub fn get_key_messages(all_key_messages: HashSet<String>) -> Option<HashSet<Str
     }
 
     // check if revision.toml exists
-    if !std::path::Path::new("revision.toml").exists() {
+    if !Path::new("revision.toml").exists() {
         // create a file named as revision.toml and add default values
         std::fs::File::create("revision.toml").unwrap();
 
