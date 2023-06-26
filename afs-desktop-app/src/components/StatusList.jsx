@@ -15,7 +15,7 @@ export default function StatusList(props) {
               {props.status.map((item, index) =>
                 <tr key={index}>
                   <td className={
-                    item.value == "SUCCESS"? "success" : item.value == "PENDING"? "pending" : "failed"
+                    item.value === "SUCCESS"? "success" : item.value === "PENDING"? "pending" : "failed"
                   }></td>
                   <td>{item.key}</td>
                 </tr>
@@ -25,28 +25,3 @@ export default function StatusList(props) {
         </div>
     )
 }
-
-/*
-convert the above into a table
-
-<table>
-  <thead>
-    <tr>
-      <th>Status</th>
-      <th>Keymessage</th>
-    </tr>
-  </thead>
-  <tbody>
-    {props.status.map((item, index) =>
-      <tr key={index}>
-        <td className={
-          item.value == "SUCCESS"? "success" : item.value == "PENDING"? "pending" : "failed"
-        }></td>
-        <td>{item.key}</td>
-      </tr>
-    )}
-  </tbody>
-</table>
-
-
-*/

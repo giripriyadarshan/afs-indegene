@@ -4,16 +4,15 @@ function Input({ value, label, name, placeholder, type, onChange }) {
     return (
         <div className={classes.inputContainer}>
             <input
-                class={classes.input}
+                className={classes.input}
                 name={name}
                 type={type}
                 placeholder={placeholder}
                 onChange={onChange}
                 value={value}
-                autocomplete="off"
             />
 
-            <label class={classes.label} for={name}>{label}</label>
+            <label className={classes.label} htmlFor={name}>{label}</label>
         </div>
     );
 }

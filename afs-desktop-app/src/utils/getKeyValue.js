@@ -11,7 +11,7 @@ export default function getKeyValue(status) {
 
           let itemArr = item.split(' | ');
 
-          if (itemArr[0] == "END") {
+          if (itemArr[0] === "END") {
             let x = {
               key: itemArr[2],
               value: itemArr[1]
@@ -23,19 +23,19 @@ export default function getKeyValue(status) {
             return false
           }
 
-          if (itemArr[0] == "ALL") {
+          if (itemArr[0] === "ALL") {
             itemArr[0] = itemArr[2]
           }
 
-          if (itemArr[1] == "FAILED") {
+          if (itemArr[1] === "FAILED") {
             let x = {
               key: itemArr[0],
               value: itemArr[1]
             }
 
-            let found = errorStatus.find(element => element.key == itemArr[0])
+            let found = errorStatus.find(element => element.key === itemArr[0])
             if (found) {
-              let index = errorStatus.findIndex(element => element.key == itemArr[0])
+              let index = errorStatus.findIndex(element => element.key === itemArr[0])
               errorStatus[index] = x
             }
             else {
@@ -43,14 +43,13 @@ export default function getKeyValue(status) {
             }
           }
           
-          let found = kvStatus.find(element => element.key == itemArr[0])
+          let found = kvStatus.find(element => element.key === itemArr[0])
           if (found) {
-            let index = kvStatus.findIndex(element => element.key == itemArr[0])
-            let x = {
+            let index = kvStatus.findIndex(element => element.key === itemArr[0])
+            kvStatus[index] = {
               key: itemArr[0],
               value: itemArr[1]
             }
-            kvStatus[index] = x
           }
           else {
             let x = {
