@@ -15,7 +15,7 @@ export default function StatusList(props) {
               {props.status.map((item, index) =>
                 <tr key={index}>
                   <td className={
-                    item.value === "SUCCESS"? "success" : item.value === "PENDING"? "pending" : "failed"
+                    item.value == "SUCCESS"? "success" : item.value == "PENDING"? "pending" : "failed"
                   }></td>
                   <td>{item.key}</td>
                 </tr>
