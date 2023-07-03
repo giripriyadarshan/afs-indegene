@@ -1,8 +1,8 @@
 [package]
 name = "app"
-version = "0.1.2"
+version = "1.0.0"
 description = "AFS desktop app"
-authors = ["you"]
+authors = ["Priyadarshan Giri <giripriyadarshan@gmail.com>"]
 license = ""
 repository = ""
 default-run = "app"
