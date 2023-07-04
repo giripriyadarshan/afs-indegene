@@ -27,6 +27,7 @@
       "deb": {
         "depends": []
       },
+      "publisher": "Indegene: Automate For Speed",
       "externalBin": [],
       "icon": [
         "icons/32x32.png",

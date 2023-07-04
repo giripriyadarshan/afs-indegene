@@ -13,6 +13,7 @@ export default function UploadKeyMessages() {
     const [uuid, setUuid] = useState('')
     const [status, setStatus] = useState([])
     const [clickedButton, setClickedButton] = useState(false)
+    const [listener, setListener] = useState(null)
     let kvStatus = getKeyValue(status)
 
     let urlExpression = new RegExp('^(http|https)://', 'i')
@@ -21,14 +22,17 @@ export default function UploadKeyMessages() {
         setStatus([])
         setClickedButton(true)
         invoke('send_url', { svnUrl: url }).then((response) => {
-            console.log(response)
             if (uuid !== '') {
                 invoke('unsubscribe', { runCode: uuid })
             }
             setUuid(response)
             subscribe(response)
 
-            listenData()
+            // listenData()
+            if (listener !== null) {
+            listener.then((response) => response())
+            }
+            setListener(listenData())
         })
     };
 
@@ -36,8 +40,9 @@ export default function UploadKeyMessages() {
         invoke('subscribe', { runCode: response })
     };
 
-    async function listenData() {
-        await listen('CurrentMessage', (event) => {
+    function listenData() {
+        return listen('CurrentMessage', (event) => {
+            console.log("listening")
             setStatus(status => [...status, event.payload])
         })
     }
@@ -68,8 +73,8 @@ export default function UploadKeyMessages() {
             </div>
 
             <div className="statuses">
-            {kvStatus.status.length > 0 ? <StatusList status={kvStatus.status} title="Upload Status" /> : clickedButton ? <p>Waiting for response...</p> : null}
-            {kvStatus.errors.length > 0 ? <StatusList status={kvStatus.errors} title="Errors" /> : clickedButton ? <p>Errors: No errors found</p> : null}
+                {kvStatus.status.length > 0 ? <StatusList status={kvStatus.status} title="Upload Status" /> : clickedButton ? <p>Waiting for response...</p> : null}
+                {kvStatus.errors.length > 0 ? <StatusList status={kvStatus.errors} title="Errors" /> : clickedButton ? <p>Errors: No errors found</p> : null}
             </div>
         </>
     )

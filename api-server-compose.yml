@@ -18,6 +18,7 @@ services:
     build: ./afs-api-server/
     ports:
       - "8008:8008"
+    restart: always
 
 volumes:
   rabbit-mq-instance:

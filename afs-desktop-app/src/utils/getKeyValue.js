@@ -5,7 +5,6 @@ export default function getKeyValue(status) {
         status.forEach((item, _) => {
           // check if item starts with "dev"
           if (item.startsWith('DEV') || item.startsWith('START')) {
-            console.log(item)
             return
           }
 
