@@ -72,7 +72,7 @@ async fn generate_new_session_id(run_code: Arc<String>, veeva_url: String) -> St
         .post(format!("{}/api/v23.1/auth", veeva_url).as_str())
         .header(CONTENT_TYPE, "application/x-www-form-urlencoded")
         .header(ACCEPT, "application/json")
-        .body("username=Bi_admin@indegene-cpp.com&password=Veeva@123456")
+        .body("username=Bi_admin@indegene-cpp.com&password=Veevauser@2023")
         .send()
         .await
         .unwrap();
