@@ -5,7 +5,7 @@ use std::{thread, time};
 use tauri::Manager;
 
 async fn subscribe_to_messages(run_code: String, app: tauri::AppHandle) -> Result<String, String> {
-    let addr = "amqp://client:password@localhost:5672/%2f";
+    let addr = "amqp://client:password@172.30.106.6:5672/%2f";
     let x = async_global_executor::block_on(async {
         let mut s = String::new();
         let conn = Connection::connect(&addr, ConnectionProperties::default())
