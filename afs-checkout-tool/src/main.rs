@@ -24,7 +24,7 @@ async fn main() -> std::io::Result<()> {
         // create folder
         std::fs::create_dir(folder_path).unwrap();
 
-        Command::new("svn")
+        match Command::new("svn")
             .arg("checkout")
             .arg(args.svn_url)
             .arg(folder_path)
@@ -33,9 +33,19 @@ async fn main() -> std::io::Result<()> {
             .arg("--password")
             .arg("second1forAFS")
             .output()
-            .expect("failed to execute process");
+        {
+            Ok(_) => {}
+            Err(e) => {
+                send_message(
+                    args.run_code.clone(),
+                    format!("SVN CHECKOUT | FAILED | {}", e),
+                )
+                .await;
+                return Ok(());
+            }
+        }
     } else {
-        Command::new("svn")
+        match Command::new("svn")
             .arg("update")
             .arg("--username")
             .arg("priyadarshan.giri")
@@ -43,14 +53,30 @@ async fn main() -> std::io::Result<()> {
             .arg("this1sforAFS")
             .current_dir(folder_path)
             .output()
-            .expect("failed to execute process");
+        {
+            Ok(_) => {}
+            Err(e) => {
+                send_message(
+                    args.run_code.clone(),
+                    format!("SVN UPDATE | FAILED | {}", e),
+                )
+                .await;
+                return Ok(());
+            }
+        }
     }
 
-    Command::new("afs-cli")
-        .arg(args.run_code)
+    match Command::new("afs-cli")
+        .arg(args.run_code.clone())
         .current_dir(folder_path)
         .output()
-        .expect("failed to execute process");
+    {
+        Ok(_) => {}
+        Err(e) => {
+            send_message(args.run_code, format!("AFS CLI | FAILED | {}", e)).await;
+            return Ok(());
+        }
+    }
 
     Ok(())
 }
