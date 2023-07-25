@@ -1,6 +1,6 @@
 [package]
 name = "app"
-version = "1.0.0"
+version = "0.2.0"
 description = "AFS desktop app"
 authors = ["Priyadarshan Giri <giripriyadarshan@gmail.com>"]
 license = ""

@@ -31,7 +31,7 @@ async fn main() -> std::io::Result<()> {
             .arg("--username")
             .arg("priyadarshan.giri")
             .arg("--password")
-            .arg("this1sforAFS")
+            .arg("second1forAFS")
             .output()
             .expect("failed to execute process");
     } else {
