@@ -8,13 +8,14 @@ import { writeTextFile } from '@tauri-apps/api/fs';
 export default function CreateConfigToml() {
     const [documentLink, setDocumentLink] = useState('');
     const [documentNumber, setDocumentNumber] = useState('');
+    const [sharedDocumentNumber, setSharedDocumentNumber] = useState('');
     const [linkErrorMessage, setLinkErrorMessage] = useState('');
     const [numberErrorMessage, setNumberErrorMessage] = useState('');
     let urlExpression = new RegExp('^(http|https)://', 'i')
 
     const validateForm = () => {
         let linkValidity = documentLink.match(urlExpression);
-        let numberValidity = !isNaN(documentNumber);
+        let numberValidity = !isNaN(documentNumber) || !isNaN(sharedDocumentNumber);
         if ( linkValidity && numberValidity ) {
             downloadConfig();
         } 
@@ -41,7 +42,7 @@ export default function CreateConfigToml() {
             }]
         });
 
-        const config = `[vault]\nlink = "${documentLink}"\nbinder_id = "${documentNumber}"`;
+        const config = `[vault]\nlink = "${documentLink}"\nbinder_id = "${documentNumber}"\nshared_folder_id = "${sharedDocumentNumber}"`;
 
         await writeTextFile(filePath, config);
     }
@@ -73,6 +74,17 @@ export default function CreateConfigToml() {
                         placeholder={"Please enter the document number"}
                         type={"text"}
                         value={documentNumber}
+                    />
+                </div>
+
+                <div className="input-element">
+                    <Input
+                        label={"Shared Document Number"}
+                        name={"shared-document-number"}
+                        onChange={(e) => setSharedDocumentNumber(e.target.value)}
+                        placeholder={"Please enter the shared document number"}
+                        type={"text"}
+                        value={sharedDocumentNumber}
                     />
                 </div>
 

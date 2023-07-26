@@ -15,6 +15,7 @@ pub async fn get_keymessage_id(
     binder_id: String,
     veeva_link: String,
     session_id: String,
+    shared_folder_id: String,
 ) -> Table {
     let veeva_url = Url::parse(veeva_link.as_str()).unwrap();
 
@@ -28,7 +29,14 @@ pub async fn get_keymessage_id(
             .len()
             == 0
     {
-        return generate_new_keymessage_id(run_code, binder_id, veeva_url, session_id).await;
+        return generate_new_keymessage_id(
+            run_code,
+            binder_id,
+            veeva_url,
+            session_id,
+            shared_folder_id,
+        )
+        .await;
     }
 
     // read key_messages_id.toml file
@@ -44,11 +52,12 @@ async fn generate_new_keymessage_id(
     binder_id: String,
     veeva_url: String,
     session_id: String,
+    shared_folder_id: String,
 ) -> Table {
     let client = Client::new();
     let res = client
         .get(format!("{}/api/v23.1/objects/binders/{}", veeva_url, binder_id).as_str())
-        .header(AUTHORIZATION, session_id)
+        .header(AUTHORIZATION, session_id.clone())
         .send()
         .await
         .unwrap();
@@ -67,6 +76,40 @@ async fn generate_new_keymessage_id(
                 key_message_name.to_owned(),
                 toml::Value::String(key_message_id),
             );
+        }
+
+        let shared_res = Client::new()
+            .get(
+                format!(
+                    "{}/api/v23.1/objects/documents/{}",
+                    veeva_url,
+                    shared_folder_id.clone()
+                )
+                .as_str(),
+            )
+            .header(AUTHORIZATION, session_id)
+            .send()
+            .await
+            .unwrap();
+
+        if shared_res.status().is_success() {
+            let shared_body = shared_res.json::<Value>().await.unwrap();
+            let key_message_name = shared_body["document"]["name__v"].as_str().unwrap();
+            let key_message_id = shared_folder_id;
+            key_messages_id_table.insert(
+                key_message_name.to_owned(),
+                toml::Value::String(key_message_id),
+            );
+        } else {
+            send_message(
+                run_code,
+                format!(
+                    "DEV | FAILED | invalid shared folder id while getting keymessages: {}",
+                    shared_folder_id
+                ),
+            )
+            .await;
+            std::process::exit(1);
         }
 
         // check if key_messages_id.toml file exists
