@@ -82,7 +82,7 @@ export default function CreateConfigToml() {
                         label={"Shared Document Number"}
                         name={"shared-document-number"}
                         onChange={(e) => setSharedDocumentNumber(e.target.value)}
-                        placeholder={"Please enter the document number"}
+                        placeholder={"Please enter the shared document number"}
                         type={"text"}
                         value={sharedDocumentNumber}
                     />
