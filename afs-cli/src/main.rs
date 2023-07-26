@@ -53,6 +53,7 @@ async fn main() -> std::io::Result<()> {
         config.vault.binder_id.clone(),
         config.vault.link.clone(),
         session_id.clone(),
+        config.vault.shared_folder_id.clone(),
     )
     .await;
 

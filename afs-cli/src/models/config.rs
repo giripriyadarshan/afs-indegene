@@ -9,4 +9,5 @@ pub struct Config {
 pub struct Vault {
     pub link: String,
     pub binder_id: String,
+    pub shared_folder_id: String,
 }
