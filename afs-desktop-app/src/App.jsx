@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
-import UploadKeyMessages from './components/UploadKeyMessages'
-import CreateConfigToml from './components/CreateConfigToml';
+import UploadKeyMessages from './components/content/UploadKeyMessages'
+import CreateConfigToml from './components/content/CreateConfigToml';
 import { Allotment } from 'allotment'
 
 function App() {

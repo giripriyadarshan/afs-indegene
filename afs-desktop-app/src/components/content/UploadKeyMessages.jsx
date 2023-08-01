@@ -2,10 +2,10 @@ import { useState } from 'react'
 import './UploadKeyMessages.css'
 import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
-import getKeyValue from '../utils/getKeyValue'
+import getKeyValue from '../../utils/getKeyValue'
 import StatusList from './StatusList'
-import Input from './micro/Input'
-import SendButton from './micro/SendButton'
+import Input from '../micro/Input'
+import SendButton from '../micro/SendButton'
 
 
 export default function UploadKeyMessages() {
