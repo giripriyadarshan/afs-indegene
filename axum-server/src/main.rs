@@ -24,3 +24,19 @@ async fn main() -> Result<(), ServerErrors> {
 async fn handler() -> Html<&'static str> {
     Html("<h1>Hello, World!</h1>")
 }
+
+/*
+basically return all files in json for the client to save in a file
+
+the format will be
+{
+    "file-name": "{
+        "json as string": "possible encode so that it wont be confused with values"
+    }",
+    "file-name2": "{same way encoded json}"
+}
+
+the client will have to decode and save the files in the correct format
+
+when sending a particular request, make sure all relations of that request are queried and sent as well
+*/

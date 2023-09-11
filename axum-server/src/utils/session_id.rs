@@ -8,6 +8,8 @@ pub fn get_session_id(instance: impl Into<String>) -> String {
 }
 
 fn renew_session_id(instance: impl Into<String>) -> String {
+    // get password from zoho_auth.rs
+    // decode the password using secret key from $ZOHO_SECRET_KEY
     // renew the session id
     // write to sessions.toml file
     // return the session id
