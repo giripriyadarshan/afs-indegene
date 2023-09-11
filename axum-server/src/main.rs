@@ -36,7 +36,8 @@ the format will be
     "file-name2": "{same way encoded json}"
 }
 
-the client will have to decode and save the files in the correct format
+the client will have to decode and save the files in the encoded format
+later when using the jsons, the client will have to decode the jsons and use them during runtime
 
 when sending a particular request, make sure all relations of that request are queried and sent as well
 */
