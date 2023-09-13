@@ -11,7 +11,6 @@ use reqwest::{
     Client,
 };
 
-
 pub async fn get_session_id(instance: impl Into<String>) -> String {
     // read from sessions.toml file
     // check if the session id is valid (check_session_id())
@@ -23,12 +22,12 @@ pub async fn get_session_id(instance: impl Into<String>) -> String {
     // check if session_id.toml file exists and is empty
     if !std::path::Path::new("../session_id.toml").exists()
         || std::path::Path::new("../session_id.toml")
-        .metadata()
-        .unwrap()
-        .len()
-        == 0
+            .metadata()
+            .unwrap()
+            .len()
+            == 0
     {
-        return renew_session_id( instance).await;
+        return renew_session_id(instance).await;
     }
 
     let file = File::open("../session_id.toml").unwrap();
@@ -53,7 +52,7 @@ pub async fn get_session_id(instance: impl Into<String>) -> String {
         // read response
         let body = res.text().await.unwrap();
         if body.contains("FAILURE") {
-            return renew_session_id(instance).await
+            return renew_session_id(instance).await;
         } else {
             return session_id.to_owned();
         }
