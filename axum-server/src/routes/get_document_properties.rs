@@ -1,7 +1,7 @@
-use axum::{response::Json, extract::Json as JsonBody};
+use axum::response::Json;
 use serde_json::{json, Value};
 
-pub async fn get_document_properties(JsonBody(payload): Json<Value>) -> Json<Value> {
+pub async fn get_document_properties(body: String) -> Json<Value> {
     // parse payload to get doc_type
     // use reqwest to get from
     // https://bi.veevavault.com/api/v23.1/metadata/objects/documents/types/{doc_type}
