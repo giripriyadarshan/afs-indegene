@@ -1,4 +1,5 @@
 use axum::{response::Html, routing::get, Router};
+use routes::get_doc_types::get_doc_types;
 use std::net::SocketAddr;
 
 mod errors;
@@ -10,7 +11,7 @@ use errors::ServerErrors;
 #[tokio::main]
 async fn main() -> Result<(), ServerErrors> {
     let app = Router::new()
-        .route("/get-doc-type", get(handler))
+        .route("/get-doc-types", get(get_doc_types))
         .route("/test-path", get(handler));
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 8792));
