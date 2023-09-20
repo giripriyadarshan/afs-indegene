@@ -58,3 +58,4 @@ async-global-executor = "2.3.1"
 axum = "0.6.20"
 hyper = { version = "0.14.27", features = ["full"] }
 tower = "0.4.13"
+base64 = "0.21.4"

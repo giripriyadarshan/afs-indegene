@@ -1,5 +1,5 @@
 use axum::{response::Html, routing::get, Router};
-use routes::get_doc_types::get_doc_types;
+use routes::{get_doc_types::get_doc_types, get_document_properties::get_document_properties};
 use std::net::SocketAddr;
 
 mod errors;
@@ -12,6 +12,7 @@ use errors::ServerErrors;
 async fn main() -> Result<(), ServerErrors> {
     let app = Router::new()
         .route("/get-doc-types", get(get_doc_types))
+        .route("/get-doc-properties", get(get_document_properties))
         .route("/test-path", get(handler));
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 8792));

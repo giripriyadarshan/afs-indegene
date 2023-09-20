@@ -3,7 +3,9 @@ use serde_json::{json, Value};
 
 use reqwest::{header::AUTHORIZATION, Client};
 
-use crate::utils::{session_id::get_session_id, get_instance_url::get_instance_url};
+use crate::utils::{
+    extract_string::ExtractString, get_instance_url::get_instance_url, session_id::get_session_id,
+};
 
 pub async fn get_doc_types(body: String) -> Json<Value> {
     // use reqwest to get from
@@ -12,11 +14,14 @@ pub async fn get_doc_types(body: String) -> Json<Value> {
 
     let body: Value = serde_json::from_str(&body).unwrap();
 
-    let session_id =
-        get_session_id(body["instance"].to_string(), body["account"].to_string()).await;
+    let session_id = get_session_id(
+        body["instance"].to_string().from_d_quotes(),
+        body["account"].to_string().from_d_quotes(),
+    )
+    .await;
     let vault_url = format!(
         "{}api/v23.1/metadata/objects/documents/types",
-        get_instance_url(body["instance"].to_string())
+        get_instance_url(body["instance"].to_string().from_d_quotes())
     );
 
     let client = Client::new();
