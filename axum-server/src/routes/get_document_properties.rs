@@ -19,12 +19,12 @@ pub async fn get_document_properties(body: String) -> Json<Value> {
     let body: Value = serde_json::from_str(&body).unwrap();
 
     let session_id = get_session_id(
-        body["instance"].to_string().from_d_quotes(),
-        body["account"].to_string().from_d_quotes(),
+        body["instance"].to_string().remove_d_quotes(),
+        body["account"].to_string().remove_d_quotes(),
     )
     .await;
 
-    let doc_type = body["doc_type"].to_string().from_d_quotes();
+    let doc_type = body["doc_type"].to_string().remove_d_quotes();
 
     let client = Client::new();
     let res = client
@@ -60,20 +60,20 @@ pub async fn get_document_properties(body: String) -> Json<Value> {
             ) {
                 ("ObjectReference", true, true, false, false, true) => {
                     let sub_properties = get_sub_properties(
-                        prop["objectType"].to_string().from_d_quotes(),
+                        prop["objectType"].to_string().remove_d_quotes(),
                         session_id.clone(),
                         true,
-                        Some(prop["controllingField"].to_string().from_d_quotes()),
+                        Some(prop["controllingField"].to_string().remove_d_quotes()),
                     )
                     .await;
                     let file_name =
-                        ".".to_owned() + prop["name"].to_string().from_d_quotes().as_str();
+                        ".".to_owned() + prop["name"].to_string().remove_d_quotes().as_str();
                     let file_name = file_name.as_str();
                     doc_type_files.insert(main_file_name.clone() + file_name, sub_properties);
                 }
                 ("ObjectReference", false, true, false, false, true) => {
                     let sub_properties = get_sub_properties(
-                        prop["objectType"].to_string().from_d_quotes(),
+                        prop["objectType"].to_string().remove_d_quotes(),
                         session_id.clone(),
                         false,
                         None,
@@ -81,7 +81,7 @@ pub async fn get_document_properties(body: String) -> Json<Value> {
                     .await;
 
                     let file_name =
-                        ".".to_owned() + prop["name"].to_string().from_d_quotes().as_str();
+                        ".".to_owned() + prop["name"].to_string().remove_d_quotes().as_str();
                     let file_name = file_name.as_str();
                     doc_type_files.insert(main_file_name.clone() + file_name, sub_properties);
                 }
@@ -120,10 +120,10 @@ async fn get_sub_properties(
         if relations.is_array() {
             for rel in relations.as_array().unwrap() {
                 let rel_meta: Value = serde_json::from_str(&rel["object"].to_string()).unwrap();
-                if rel_meta["name"].to_string().from_d_quotes()
+                if rel_meta["name"].to_string().remove_d_quotes()
                     == controlling_field.clone().unwrap()
                 {
-                    relationship_name = rel["relationship_name"].to_string().from_d_quotes();
+                    relationship_name = rel["relationship_name"].to_string().remove_d_quotes();
                 }
             }
         }
