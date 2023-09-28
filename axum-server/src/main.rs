@@ -1,5 +1,8 @@
 use axum::{response::Html, routing::get, Router};
-use routes::{get_doc_types::get_doc_types, get_document_properties::get_document_properties, create_binder::create_binder};
+use routes::{
+    create_binder::create_binder, get_doc_types::get_doc_types,
+    get_document_properties::get_document_properties,
+};
 use std::net::SocketAddr;
 
 mod errors;
