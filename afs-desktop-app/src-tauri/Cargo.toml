@@ -22,6 +22,7 @@ reqwest = "0.11.18"
 futures-lite = "1.13.0"
 lapin = "2.3.1"
 async-global-executor = "2.3.1"
+base64 = "0.21.4"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.

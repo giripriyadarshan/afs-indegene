@@ -12,7 +12,8 @@ members = [
     "afs-daemon",
     "afs-checkout-tool",
     "afs-api-server",
-    "afs-desktop-app/src-tauri"
+    "afs-desktop-app/src-tauri",
+    "axum-server"
 ]
 
 [[bin]]
@@ -31,6 +32,10 @@ path = "afs-checkout-tool/src/main.rs"
 name = "afs-api-server"
 path = "afs-api-server/src/main.rs"
 
+[[bin]]
+name = "axum-server"
+path = "axum-server/src/main.rs"
+
 [dependencies]
 actix-web = "4.3.1"
 clap = { version = "4.3.19", features = ["derive"] }
@@ -40,8 +45,8 @@ reqwest = { version = "0.11.18", features = ["json", "multipart", "blocking"] }
 serde = { version = "1.0.175", features = ["derive"] }
 serde_json = "1.0.103"
 ssh2 = "0.9.4"
-tokio = { version = "1.29.1", features = ["full"] }
-toml = "0.7.6"
+tokio = { version = "1.32.0", features = ["full"] }
+toml = "0.8.0"
 url = "2.4.0"
 uuid = { version = "1.4.1", features = ["v4"] }
 walkdir = "2.3.3"
@@ -50,3 +55,7 @@ zip = "0.6.6"
 tauri = { version = "1.4.1" }
 futures-lite = "1.13.0"
 async-global-executor = "2.3.1"
+axum = "0.6.20"
+hyper = { version = "0.14.27", features = ["full"] }
+tower = "0.4.13"
+base64 = "0.21.4"

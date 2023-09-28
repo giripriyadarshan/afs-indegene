@@ -13,7 +13,7 @@ exclude = ["target", "Cargo.lock", ".gitignore", ".git"]
 [dependencies]
 clap = { version = "4.3.19", features = ["derive"] }
 serde = { version = "1.0.175", features = ["derive"] }
-toml = "0.7.6"
+toml = "0.8.0"
 zip = "0.6.6"
 walkdir = "2.3.3"
 xml-rs = "0.8.16"
