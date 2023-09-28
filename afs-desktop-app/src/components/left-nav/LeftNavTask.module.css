@@ -35,3 +35,8 @@
 .container.true .img img.comingSoon, .container:hover .img img.comingSoon {
     filter: invert(19%) sepia(100%) saturate(1613%) hue-rotate(197deg) brightness(96%) contrast(99%);
 }
+
+.tooltip {
+    background-color: #282a36;
+    color: #f8f8f2;
+}

@@ -1,6 +1,7 @@
 import classes from './LeftNavTask.module.css';
 import Veeva from '../../assets/leftNavIcons/veeva-icon-black.svg'
 import More from '../../assets/leftNavIcons/more-horizontal.svg'
+import { Tooltip } from 'react-tooltip'
 
 
 /* 
@@ -16,11 +17,26 @@ export default function LeftNavTask(props) {
         comingSoon: More,
     }
 
+    const tooltipText = {
+        veeva: 'Veeva Vault (All Instances)',
+        comingSoon: 'Coming Soon',
+    }
+
     return (
-        <div className={`${classes.container} ${classes[props.activeTask == props.task? 'true' : 'false']}`} onClick={() => props.navClick()}>
+        <div
+            className={`
+            ${classes.container} 
+            ${classes[props.activeTask == props.task ? 'true' : 'false']}
+        `}
+            onClick={() => props.navClick()}
+            data-tooltip-id={props.task}
+            data-tooltip-content={tooltipText[props.task]}
+            data-tooltip-place="right"
+        >
             <div className={classes.img}>
                 <img src={tasks[props.task]} alt="" className={classes[props.task]} />
             </div>
+            <Tooltip id={props.task} className={classes.tooltip} />
         </div>
     )
 }
