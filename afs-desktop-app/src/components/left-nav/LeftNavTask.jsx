@@ -41,6 +41,7 @@ export default function LeftNavTask(props) {
             data-tooltip-id={props.task}
             data-tooltip-content={tooltipText[props.task]}
             data-tooltip-place="right"
+            data-tooltip-delay-show={1000}
         >
             <div className={classes.img}>
                 <img src={tasks[props.task]} alt="" className={classes[props.task]} />
