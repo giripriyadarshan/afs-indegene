@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './CreateConfigToml.css'
-import Input from './micro/Input'
-import GenericButton from './micro/GenericButton';
+import Input from '../micro/Input'
+import GenericButton from '../micro/GenericButton';
 import { save } from "@tauri-apps/api/dialog";
 import { writeTextFile } from '@tauri-apps/api/fs';
 
