@@ -3,11 +3,13 @@
     left: 0;
     top: 0;
 
-    width: 40px;
+    width: 48px;
     height: 100vh;
 
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+
+    background-color: #343746;
 }
