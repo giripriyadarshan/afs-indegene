@@ -1,0 +1,33 @@
+
+.container {
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    aspect-ratio: 1/1;
+}
+
+.img {
+    width: 80%;
+    height: 80%;
+}
+
+.img img {
+    width: 100%;
+}
+
+.container.true {
+    background-color: #3c3d51;
+    border-left: 5px solid #9e5b8b;
+}
+
+.container:hover .img img.veeva {
+    filter: invert(64%) sepia(93%) saturate(587%) hue-rotate(337deg) brightness(102%) contrast(102%);
+}
+
+.container:hover .img img.comingSoon {
+    filter: invert(19%) sepia(100%) saturate(1613%) hue-rotate(197deg) brightness(96%) contrast(99%);
+}

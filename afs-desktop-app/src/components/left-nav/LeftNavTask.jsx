@@ -12,13 +12,14 @@ import More from '../../assets/leftNavIcons/more-horizontal.svg'
 */
 export default function LeftNavTask(props) {
     const tasks = {
-        veeva: <Veeva />,
-        comingSoon: <More />,
+        veeva: Veeva,
+        comingSoon: More,
     }
+
     return (
-        <div className={classes.container} onClick={() => props.navClick()}>
+        <div className={`${classes.container} ${classes[props.activeTask == props.task? 'true' : 'false']}`} onClick={() => props.navClick()}>
             <div className={classes.img}>
-                {tasks[props.task]}
+                <img src={tasks[props.task]} alt="" className={classes[props.task]} />
             </div>
         </div>
     )
