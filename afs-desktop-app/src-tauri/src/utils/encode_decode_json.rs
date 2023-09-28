@@ -1,9 +1,11 @@
 use base64::{engine::general_purpose, Engine as _};
 
+#[tauri::command]
 pub fn encode_json(json_in_string: String) -> String {
     general_purpose::URL_SAFE_NO_PAD.encode(json_in_string)
 }
 
+#[tauri::command]
 pub fn decode_json(encoded_string: String) -> String {
     let decoded = general_purpose::URL_SAFE_NO_PAD
         .decode(encoded_string)

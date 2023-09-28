@@ -1,5 +1,8 @@
 use axum::{response::Html, routing::get, Router};
-use routes::{get_doc_types::get_doc_types, get_document_properties::get_document_properties};
+use routes::{
+    create_binder::create_binder, get_doc_types::get_doc_types,
+    get_document_properties::get_document_properties,
+};
 use std::net::SocketAddr;
 
 mod errors;
@@ -13,7 +16,7 @@ async fn main() -> Result<(), ServerErrors> {
     let app = Router::new()
         .route("/get-doc-types", get(get_doc_types))
         .route("/get-doc-properties", get(get_document_properties))
-        .route("/test-path", get(handler));
+        .route("/create-binder", get(create_binder));
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 8792));
     axum::Server::bind(&addr)
@@ -21,10 +24,6 @@ async fn main() -> Result<(), ServerErrors> {
         .await?;
 
     Ok(())
-}
-
-async fn handler() -> Html<&'static str> {
-    Html("<h1>Hello, World!</h1>")
 }
 
 /*
