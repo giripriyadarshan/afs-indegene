@@ -50,7 +50,7 @@ pub async fn get_session_id(instance: impl Into<String>, account: impl Into<Stri
             )
             .as_str(),
         )
-        .header(AUTHORIZATION, session_id.clone())
+        .header(AUTHORIZATION, session_id)
         .send()
         .await
         .unwrap();

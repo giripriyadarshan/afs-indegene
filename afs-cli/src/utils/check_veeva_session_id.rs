@@ -43,7 +43,7 @@ pub async fn check_veeva_session_id(run_code: Arc<String>, veeva_link: String) -
     let client = Client::new();
     let res = client
         .post(format!("{}/api/v23.1/keep-alive", veeva_url).as_str())
-        .header(AUTHORIZATION, session_id.clone())
+        .header(AUTHORIZATION, session_id)
         .send()
         .await
         .unwrap();
