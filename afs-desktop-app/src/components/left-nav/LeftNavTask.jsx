@@ -1,6 +1,8 @@
 import classes from './LeftNavTask.module.css';
-import Veeva from '../../assets/leftNavIcons/veeva-icon-black.svg'
-import More from '../../assets/leftNavIcons/more-horizontal.svg'
+import Veeva from '../../assets/leftNavIcons/veeva-icon-black.svg';
+import More from '../../assets/leftNavIcons/more-horizontal.svg';
+import { Tooltip } from 'react-tooltip';
+import { useState } from 'react';
 
 
 /* 
@@ -12,14 +14,39 @@ import More from '../../assets/leftNavIcons/more-horizontal.svg'
 */
 export default function LeftNavTask(props) {
     const tasks = {
-        veeva: <Veeva />,
-        comingSoon: <More />,
+        veeva: Veeva,
+        comingSoon: More,
     }
+
+    const tooltipText = {
+        veeva: 'Veeva Vault (All Instances)',
+        comingSoon: 'Coming Soon',
+    }
+
+    const [tooltipVisibility, setTooltipVisibility] = useState(false);
+
     return (
-        <div className={classes.container} onClick={() => props.navClick()}>
+        <div
+            className={`
+            ${classes.container} 
+            ${classes[props.activeTask == props.task ? 'true' : 'false']}
+        `}
+            onClick={() => {
+                props.navClick()
+                setTooltipVisibility(false)
+            }}
+            onMouseEnter={() => setTooltipVisibility(true)}
+            onMouseLeave={() => setTooltipVisibility(false)}
+
+            data-tooltip-id={props.task}
+            data-tooltip-content={tooltipText[props.task]}
+            data-tooltip-place="right"
+            data-tooltip-delay-show={1000}
+        >
             <div className={classes.img}>
-                {tasks[props.task]}
+                <img src={tasks[props.task]} alt="" className={classes[props.task]} />
             </div>
+            <Tooltip id={props.task} className={classes.tooltip} isOpen={tooltipVisibility} />
         </div>
     )
 }
